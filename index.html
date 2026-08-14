@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Car Workshop Feedback</title>
+<style>
+body{margin:0;background:#0b0b0c;color:#f5f5f5;font-family:Arial,sans-serif;display:flex;justify-content:center;padding:24px}
+.card{max-width:650px;width:100%;background:#222;border-radius:28px;padding:30px}
+h1{letter-spacing:1px}.q{color:#ccc;font-size:21px;margin:26px 0 12px}
+.stars button{background:none;border:0;color:#666;font-size:44px;padding:2px;cursor:pointer}.stars button.on{color:#ffd54a}
+label{display:block;color:#ccc;font-size:19px;margin:13px 0}input[type=checkbox]{width:21px;height:21px;vertical-align:middle;margin-right:10px}
+textarea{width:100%;box-sizing:border-box;min-height:120px;background:#151515;color:white;border:1px solid #555;border-radius:15px;padding:14px;font-size:17px}
+#submit{width:100%;padding:15px;border:0;border-radius:15px;font-size:20px;font-weight:bold;margin-top:20px}
+#error{color:#ff9999;margin-top:10px}.thank{display:none}.thank h2{font-size:36px}.thank p{font-size:21px;color:#ccc}
+</style>
+</head>
+<body><main class="card">
+<section id="form">
+<h1>CAR WORKSHOP FEEDBACK</h1>
+<div class="q">How was your experience?</div>
+<div class="stars">
+<button data-v="1">★</button><button data-v="2">★</button><button data-v="3">★</button><button data-v="4">★</button><button data-v="5">★</button>
+</div>
+<div id="ratingText">Tap a star to rate</div>
+<div class="q">What could we improve?</div>
+<label><input type="checkbox" value="Waiting time">Waiting time</label>
+<label><input type="checkbox" value="Service quality">Service quality</label>
+<label><input type="checkbox" value="Staff service">Staff service</label>
+<label><input type="checkbox" value="Price / charges">Price / charges</label>
+<div class="q">Comments:</div>
+<textarea id="comments" placeholder="Write your comments here..."></textarea>
+<div id="error"></div><button id="submit">SUBMIT</button>
+</section>
+<section id="thank" class="thank"><h2>✓ Thank You!</h2><p>Your feedback has been submitted.</p><p>We appreciate your feedback.</p></section>
+</main>
+<script>
+const SCRIPT_URL="PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
+let rating=0; const labels={1:"Very Poor",2:"Poor",3:"Average",4:"Good",5:"Excellent"};
+document.querySelectorAll(".stars button").forEach(b=>b.onclick=()=>{
+ rating=+b.dataset.v; document.querySelectorAll(".stars button").forEach(x=>x.classList.toggle("on",+x.dataset.v<=rating));
+ document.getElementById("ratingText").textContent="★".repeat(rating)+" "+labels[rating];
+});
+document.getElementById("submit").onclick=async()=>{
+ if(!rating){document.getElementById("error").textContent="Please choose a rating.";return;}
+ if(SCRIPT_URL.startsWith("PASTE_")){document.getElementById("error").textContent="Setup needed: paste your Google Apps Script Web App URL into index.html.";return;}
+ const improvements=[...document.querySelectorAll('input[type=checkbox]:checked')].map(x=>x.value).join(", ");
+ const body=new URLSearchParams({rating:String(rating),ratingLabel:labels[rating],improvements,comments:document.getElementById("comments").value});
+ try{
+   document.getElementById("submit").disabled=true;
+   await fetch(SCRIPT_URL,{method:"POST",mode:"no-cors",body});
+   document.getElementById("form").style.display="none";document.getElementById("thank").style.display="block";
+ }catch(e){document.getElementById("error").textContent="Could not submit. Please try again.";document.getElementById("submit").disabled=false;}
+};
+</script></body></html>
