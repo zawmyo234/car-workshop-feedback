@@ -1,3 +1,5 @@
+
+
 <!doctype html>
 <html>
 <head>
@@ -34,7 +36,7 @@ textarea{width:100%;box-sizing:border-box;min-height:120px;background:#151515;co
 <section id="thank" class="thank"><h2>✓ Thank You!</h2><p>Your feedback has been submitted.</p><p>We appreciate your feedback.</p></section>
 </main>
 <script>
-const SCRIPT_URL="PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
+const SCRIPT_URL="https://script.google.com/macros/s/AKfycbxUIbnp3HDYzwBAKk7E1fmEcyLyZCK6TZY12Y88573dhujXe8FXmK29lSDgNLfnHgUBjw/exec";
 let rating=0; const labels={1:"Very Poor",2:"Poor",3:"Average",4:"Good",5:"Excellent"};
 document.querySelectorAll(".stars button").forEach(b=>b.onclick=()=>{
  rating=+b.dataset.v; document.querySelectorAll(".stars button").forEach(x=>x.classList.toggle("on",+x.dataset.v<=rating));
