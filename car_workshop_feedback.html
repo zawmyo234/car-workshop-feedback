@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Car Workshop Feedback</title>
+  <style>
+    :root {
+      --bg: #0b0b0c;
+      --card: #222224;
+      --text: #f2f2f4;
+      --muted: #bfc2cf;
+      --line: #3b3b3f;
+      --accent: #ffd54a;
+      --button: #f1f1f3;
+      --button-text: #171719;
+      --success: #7ee08d;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .card {
+      width: min(680px, 100%);
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 32px;
+      padding: 34px 28px;
+      box-shadow: 0 18px 45px rgba(0,0,0,.35);
+    }
+
+    h1 {
+      font-size: clamp(26px, 5vw, 40px);
+      letter-spacing: 2px;
+      margin: 0 0 28px;
+    }
+
+    .question {
+      margin-top: 28px;
+      margin-bottom: 14px;
+      font-size: 22px;
+      color: var(--muted);
+    }
+
+    .rating-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 12px 0 8px;
+    }
+
+    .star {
+      border: 0;
+      background: transparent;
+      color: #6f727b;
+      font-size: 42px;
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+      transition: transform .12s ease, color .12s ease;
+    }
+
+    .star:hover { transform: scale(1.08); }
+    .star.active { color: var(--accent); }
+
+    #ratingText {
+      color: var(--muted);
+      font-size: 18px;
+      min-height: 26px;
+      margin-bottom: 18px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 20px;
+      margin: 14px 0;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .option input {
+      width: 22px;
+      height: 22px;
+      accent-color: #dcdce0;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 130px;
+      resize: vertical;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: #171719;
+      color: var(--text);
+      padding: 16px;
+      font-size: 18px;
+      outline: none;
+    }
+
+    textarea:focus {
+      border-color: #777982;
+    }
+
+    .error {
+      color: #ff8a8a;
+      margin-top: 12px;
+      min-height: 22px;
+    }
+
+    button.submit {
+      width: 100%;
+      margin-top: 22px;
+      border: none;
+      border-radius: 18px;
+      padding: 16px 20px;
+      font-size: 20px;
+      font-weight: 700;
+      cursor: pointer;
+      background: var(--button);
+      color: var(--button-text);
+    }
+
+    button.submit:active {
+      transform: translateY(1px);
+    }
+
+    #thankYou {
+      display: none;
+      text-align: left;
+      padding: 10px 2px;
+    }
+
+    .check {
+      color: var(--success);
+      font-size: 38px;
+      margin-bottom: 12px;
+    }
+
+    #thankYou h2 {
+      font-size: 36px;
+      margin: 0 0 26px;
+    }
+
+    #thankYou p {
+      color: var(--muted);
+      font-size: 22px;
+      line-height: 1.6;
+      margin: 10px 0;
+    }
+
+    .small-note {
+      color: #8e919a;
+      font-size: 14px;
+      margin-top: 24px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 480px) {
+      body { padding: 14px; }
+      .card { border-radius: 24px; padding: 26px 20px; }
+      .star { font-size: 36px; }
+      .option { font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <section id="feedbackForm">
+      <h1>CAR WORKSHOP FEEDBACK</h1>
+
+      <div class="question">How was your experience?</div>
+
+      <div class="rating-row" aria-label="Star rating">
+        <button class="star" type="button" data-value="1" aria-label="1 star">★</button>
+        <button class="star" type="button" data-value="2" aria-label="2 stars">★</button>
+        <button class="star" type="button" data-value="3" aria-label="3 stars">★</button>
+        <button class="star" type="button" data-value="4" aria-label="4 stars">★</button>
+        <button class="star" type="button" data-value="5" aria-label="5 stars">★</button>
+      </div>
+
+      <div id="ratingText">Tap a star to rate</div>
+
+      <div class="question">What could we improve?</div>
+
+      <label class="option">
+        <input type="checkbox" name="improve" value="Waiting time" />
+        Waiting time
+      </label>
+
+      <label class="option">
+        <input type="checkbox" name="improve" value="Service quality" />
+        Service quality
+      </label>
+
+      <label class="option">
+        <input type="checkbox" name="improve" value="Staff service" />
+        Staff service
+      </label>
+
+      <label class="option">
+        <input type="checkbox" name="improve" value="Price / charges" />
+        Price / charges
+      </label>
+
+      <div class="question">Comments:</div>
+      <textarea id="comments" placeholder="Write your comments here..."></textarea>
+
+      <div id="error" class="error"></div>
+
+      <button class="submit" id="submitBtn" type="button">SUBMIT</button>
+
+      <div class="small-note">
+        This first version is the feedback webpage only. The next step is connecting it to Google Sheets or another database so you can see all submitted feedback.
+      </div>
+    </section>
+
+    <section id="thankYou">
+      <div class="check">✓</div>
+      <h2>Thank You!</h2>
+      <p>Your feedback has been submitted.</p>
+      <p>We appreciate your feedback.</p>
+    </section>
+  </main>
+
+  <script>
+    let rating = 0;
+    const stars = [...document.querySelectorAll(".star")];
+    const ratingText = document.getElementById("ratingText");
+    const labels = {
+      1: "Very Poor",
+      2: "Poor",
+      3: "Average",
+      4: "Good",
+      5: "Excellent"
+    };
+
+    stars.forEach(star => {
+      star.addEventListener("click", () => {
+        rating = Number(star.dataset.value);
+        stars.forEach(s => {
+          s.classList.toggle("active", Number(s.dataset.value) <= rating);
+        });
+        ratingText.textContent = `${"★".repeat(rating)} ${labels[rating]}`;
+        document.getElementById("error").textContent = "";
+      });
+    });
+
+    document.getElementById("submitBtn").addEventListener("click", () => {
+      if (rating === 0) {
+        document.getElementById("error").textContent = "Please choose a star rating before submitting.";
+        return;
+      }
+
+      const selected = [...document.querySelectorAll('input[name="improve"]:checked')]
+        .map(x => x.value);
+
+      const comments = document.getElementById("comments").value.trim();
+
+      // For now, save one copy locally in this browser.
+      // Next step: replace this with Google Sheets / database submission.
+      const feedback = {
+        date: new Date().toISOString(),
+        rating,
+        ratingLabel: labels[rating],
+        improvements: selected,
+        comments
+      };
+
+      const existing = JSON.parse(localStorage.getItem("carWorkshopFeedback") || "[]");
+      existing.push(feedback);
+      localStorage.setItem("carWorkshopFeedback", JSON.stringify(existing));
+
+      document.getElementById("feedbackForm").style.display = "none";
+      document.getElementById("thankYou").style.display = "block";
+    });
+  </script>
+</body>
+</html>
